@@ -62,7 +62,7 @@ path constraints:
    0,
    1) !=
 0]
-gas: 7091 with gas assignment
+gas: 7091 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-0-owner == 0 
 && Concat(Extract(255, 160, Ia_store-0-owner),

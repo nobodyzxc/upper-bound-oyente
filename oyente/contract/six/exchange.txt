@@ -34,7 +34,7 @@ path constraints:
  Not(If(ULE(4, Id_size), 0, 1) != 0),
  If(Extract(255, 224, Id_1) == 2016063210, 1, 0) != 0,
  If(Iv == 0, 1, 0) != 0]
-gas: 5588 with gas assignment
+gas: 5588 with gas assignments
 gas assignments:
  5000(Gsreset):(!(_rate != 0) ? 5000 : 20000){Id_1 : 54352956619204520417990123317455225948907363759740742911491408821623308943360,
  Id_size : 4,

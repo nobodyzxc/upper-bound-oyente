@@ -46,7 +46,7 @@ path constraints:
  If(ULE(4, Id_size), 0, 1) != 0,
  Not(If(Extract(7, 0, Ia_store-0-is_attack) == 0, 1, 0) != 0),
  True]
-gas: 5700 with gas assignment
+gas: 5700 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-0-is_attack == 0 
 && Concat(Extract(255, 8, Ia_store-0-is_attack), 0) != 0)
@@ -112,7 +112,7 @@ path constraints:
  If(Iv == 0, 1, 0) != 0,
  balance_5 <= init_Ia + Iv,
  True]
-gas: 754 with gas assignment
+gas: 754 with gas assignments
 gas assignments:
  0:(!(balance_5 != 0) ? 0 : 9000){Id_1 : 43352733460284595907259723709317083224722273442619959424045366794894018871296,
  Id_size : 4,
@@ -206,7 +206,7 @@ path constraints:
  Iv <= init_Ia + Iv,
  some_var_8 >= 0,
  True]
-gas: 657 with gas assignment
+gas: 657 with gas assignments
 gas assignments:
  0:(!(Iv != 0) ? 0 : 9000){Id_1 : 94482241256677223720308674365448432550660581809977780367718865401173155774464,
  Id_size : 4,
@@ -243,7 +243,7 @@ path constraints:
  Not(If(Extract(255, 224, Id_1) == 3504541104, 1, 0) != 0),
  Not(If(Extract(7, 0, Ia_store-0-is_attack) == 0, 1, 0) != 0),
  True]
-gas: 5855 with gas assignment
+gas: 5855 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-0-is_attack == 0 
 && Concat(Extract(255, 8, Ia_store-0-is_attack), 0) != 0)

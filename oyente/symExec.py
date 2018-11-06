@@ -277,7 +277,8 @@ def print_cfg(filename, show_path_cond):
     create_graph(
             cfg_nodes(vertices.values(),
                       longest_path,
-                      show_path_cond),
+                      show_path_cond,
+                      g_src_map),
             cfg_edges(edges, longest_path,
                       cfg_path_constraints,
                       show_path_cond),
@@ -311,7 +312,7 @@ def print_cfg(filename, show_path_cond):
         gc = '\n'.join(cons)
         if not gc: eprint("")
         else:
-            eprint(" with gas assignment")
+            eprint(" with gas assignments")
             eprint("gas assignments:\n", gc)
     eprint("\n" + "-*" * 40 + "-\n")
 
@@ -471,6 +472,9 @@ def construct_bb():
     for key in end_ins_dict:
         end_address = end_ins_dict[key]
         block = BasicBlock(key, end_address)
+        for i in range(key, end_address + 1):
+            src = g_src_map.get_source_code(i)
+            block.source.append(src)
         if key not in instructions:
             continue
         block.add_instruction(instructions[key])

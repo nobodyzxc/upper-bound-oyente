@@ -26,7 +26,7 @@ def create_graph(n, e, filename):
     g.render(filename=filename, cleanup=True)
     return g
 
-def cfg_nodes(blocks, lgp, show_cond):
+def cfg_nodes(blocks, lgp, show_cond, src_map):
     color = lambda tag, cover: \
             ['#ffffff', '', '#f4f141'][min((tag in lgp) * 2 + bool(cover), 2)]
     cond = lambda show, cons: ('\n' + '=' * 40 + '\n') + \
@@ -45,7 +45,7 @@ def cfg_nodes(blocks, lgp, show_cond):
 
     return [(str(block.start), \
              { 'label' : \
-                 """%s\naddrs : (%s, %s)\n\n%s\n\n%s\n%s\n%s%s%s""" % (
+                 """%s\naddrs : (%s, %s)\n\n%s\n\n%s\n%s\n%s%s%s%s""" % (
                     block.type,
                     block.start, block.end,
                     notaddIdx(block.instructions,
@@ -62,7 +62,8 @@ def cfg_nodes(blocks, lgp, show_cond):
                         ["path_constraints{}:\n{}".format(
                             i + 1,
                             ',\n'.join(map(str, v)))
-                                for i, v in enumerate(block.path_cond.values())])
+                                for i, v in enumerate(block.path_cond.values())]),
+                    "\n{}\n{}".format('-' * 40, block.source[-1])
                     ),
                 'shape': 'box', \
                 'style': 'filled', \

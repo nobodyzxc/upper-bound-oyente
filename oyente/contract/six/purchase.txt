@@ -62,7 +62,7 @@ path constraints:
    0,
    1) !=
 0]
-gas: 7091 with gas assignment
+gas: 7091 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-0-owner == 0 
 && Concat(Extract(255, 160, Ia_store-0-owner),
@@ -208,7 +208,7 @@ path constraints:
  Not(0 == 1),
  Not(0 == 1),
  True]
-gas: 37274 with gas assignment
+gas: 37274 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-some_var_1-status[i] == 0 
 && Concat(Extract(255, 8, Ia_store-some_var_1-status[i]), 0) != 0)
@@ -577,7 +577,7 @@ path constraints:
    0,
    1) !=
 0]
-gas: 7333 with gas assignment
+gas: 7333 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-0-owner == 0 
 && Concat(Extract(255, 160, Ia_store-0-owner),
@@ -740,7 +740,7 @@ path constraints:
  Not(If(stepNumber == 0, 1, 0) != 0),
  If(stepNumber == 6, 0, 1) != 0,
  If(stepNumber == 5, 0, 1) != 0]
-gas: 7395 with gas assignment
+gas: 7395 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-some_var_10-status[stepNumber] == 0 
 && If(newStatus == 0, 0, 1) |

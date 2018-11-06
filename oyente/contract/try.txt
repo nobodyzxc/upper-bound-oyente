@@ -1,0 +1,85 @@
+WARNING:root:You are using evm version 1.8.15. The supported version is 1.7.3
+INFO:root:contract try.sol:power:
+INFO:symExec:	============ Results ===========
+INFO:symExec:	  EVM Code Coverage: 			 99.1%
+INFO:symExec:	  Integer Underflow: 			 False
+INFO:symExec:	  Integer Overflow: 			 False
+INFO:symExec:	  Parity Multisig Bug 2: 		 False
+INFO:symExec:	  Callstack Depth Attack Vulnerability:  False
+INFO:symExec:	  Transaction-Ordering Dependence (TOD): False
+INFO:symExec:ALL PATH CONDITIONS
+INFO:symExec:PATH 1: [0 <= Iv, init_Is >= Iv, 0 <= init_Ia]
+INFO:symExec:	  Timestamp Dependency: 		 False
+INFO:symExec:	  Re-Entrancy Vulnerability: 		 False
+INFO:symExec:	====== Analysis Completed ======
+block number: 12
+instruction count: 114
+path count: 5
+max cost gas: 333
+max cost path: [0, 12, 68, 79, 140, 151, 165, 118]
+path stack sum (max, min, avg): (2, 0, 1.0)
+========================================
+path: [0, 63]
+stack sum: 0
+path constraints:
+[0 <= Iv, init_Is >= Iv, 0 <= init_Ia, If(ULE(4, Id_size), 0, 1) != 0]
+gas: 40
+========================================
+path: [0, 12, 68, 79, 140, 159, 165, 118]
+stack sum: 1
+path constraints:
+[0 <= Iv,
+ init_Is >= Iv,
+ 0 <= init_Ia,
+ Not(If(ULE(4, Id_size), 0, 1) != 0),
+ If(Extract(255, 224, Id_1) == 776759679, 1, 0) != 0,
+ If(Iv == 0, 1, 0) != 0,
+ If(And(Extract(255, 7, b) == 0, ULE(Extract(6, 0, b), 100)),
+   1,
+   0) !=
+0]
+gas: 323 with gas assignments
+gas assignments:
+ b > 0 ? 10 * (1 + floor(log(b, 256))) (omit, no assignment)
+========================================
+path: [0, 12, 68, 79, 140, 151, 165, 118]
+stack sum: 1
+path constraints:
+[0 <= Iv,
+ init_Is >= Iv,
+ 0 <= init_Ia,
+ Not(If(ULE(4, Id_size), 0, 1) != 0),
+ If(Extract(255, 224, Id_1) == 776759679, 1, 0) != 0,
+ If(Iv == 0, 1, 0) != 0,
+ Not(If(And(Extract(255, 7, b) == 0,
+           ULE(Extract(6, 0, b), 100)),
+       1,
+       0) !=
+    0)]
+gas: 333 with gas assignments
+gas assignments:
+ a > 0 ? 10 * (1 + floor(log(a, 256))) (omit, no assignment)
+========================================
+path: [0, 12, 68, 75]
+stack sum: 2
+path constraints:
+[0 <= Iv,
+ init_Is >= Iv,
+ 0 <= init_Ia,
+ Not(If(ULE(4, Id_size), 0, 1) != 0),
+ If(Extract(255, 224, Id_1) == 776759679, 1, 0) != 0,
+ Not(If(Iv == 0, 1, 0) != 0)]
+gas: 106
+========================================
+path: [0, 12, 63]
+stack sum: 1
+path constraints:
+[0 <= Iv,
+ init_Is >= Iv,
+ 0 <= init_Ia,
+ Not(If(ULE(4, Id_size), 0, 1) != 0),
+ Not(If(Extract(255, 224, Id_1) == 776759679, 1, 0) != 0)]
+gas: 85
+
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+

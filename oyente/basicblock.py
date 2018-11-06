@@ -15,6 +15,7 @@ class BasicBlock:
         # self.acc_gas_constraints = ""
         self.stksum = 0
         self.visited = False
+        self.source = []
 
     def get_start_address(self):
         return self.start

@@ -91,7 +91,7 @@ path constraints:
  If(Iv == 0, 1, 0) != 0,
  Ia_store-some_var_3-userBalances[msg.sender] <= init_Ia + Iv,
  True]
-gas: 6737 with gas assignment
+gas: 6737 with gas assignments
 gas assignments:
  0:(!(Ia_store-some_var_3-userBalances[msg.sender] != 0) ? 0 : 9000){Id_1 : 43352733460284595907259723709317083224722273442619959424045366794894018871296,
  Id_size : 4,
@@ -122,7 +122,7 @@ path constraints:
  Not(If(Extract(255, 224, Id_1) == 1198737554, 1, 0) != 0),
  Not(If(Extract(255, 224, Id_1) == 1608042256, 1, 0) != 0),
  If(Extract(255, 224, Id_1) == 3236108283, 1, 0) != 0]
-gas: 5482 with gas assignment
+gas: 5482 with gas assignments
 gas assignments:
  5000(Gsreset):(!(Ia_store-some_var_5-userBalances[msg.sender] == 0 
 && Ia_store-some_var_5-userBalances[msg.sender] + Iv != 0)

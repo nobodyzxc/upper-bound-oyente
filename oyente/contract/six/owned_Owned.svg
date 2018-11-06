@@ -1043,12 +1043,12 @@
 <text text-anchor="middle" x="2518.5" y="-3468.8" font-family="Times,serif" font-size="14.00" fill="#000000">5000(Gsreset):(!(Ia_store&#45;0&#45;owner == 0 </text>
 <text text-anchor="middle" x="2518.5" y="-3453.8" font-family="Times,serif" font-size="14.00" fill="#000000">&amp;&amp; Concat(Extract(255, 160, Ia_store&#45;0&#45;owner),</text>
 <text text-anchor="middle" x="2518.5" y="-3438.8" font-family="Times,serif" font-size="14.00" fill="#000000"> &#160;&#160;&#160;&#160;&#160;&#160;Extract(159, 0, Ia_store&#45;1&#45;newOwner)) != 0)</text>
-<text text-anchor="middle" x="2518.5" y="-3423.8" font-family="Times,serif" font-size="14.00" fill="#000000">? 5000 : 20000)){Ia_store&#45;0&#45;owner : 115792089237316195423570985008687907853269984665639945069437941317775680077823,</text>
-<text text-anchor="middle" x="2518.5" y="-3408.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Ia_store&#45;1&#45;newOwner : 0,</text>
-<text text-anchor="middle" x="2518.5" y="-3393.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Is : 0,</text>
-<text text-anchor="middle" x="2518.5" y="-3378.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Id_1 : 55059044443283702463324320493339087092216481002364619407536350093263669035008,</text>
-<text text-anchor="middle" x="2518.5" y="-3363.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Id_size : 4,</text>
-<text text-anchor="middle" x="2518.5" y="-3348.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Iv : 0}</text>
+<text text-anchor="middle" x="2518.5" y="-3423.8" font-family="Times,serif" font-size="14.00" fill="#000000">? 5000 : 20000)){Iv : 0,</text>
+<text text-anchor="middle" x="2518.5" y="-3408.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Ia_store&#45;0&#45;owner : 1,</text>
+<text text-anchor="middle" x="2518.5" y="-3393.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Ia_store&#45;1&#45;newOwner : 0,</text>
+<text text-anchor="middle" x="2518.5" y="-3378.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Id_size : 57896044618658097711785492504343953926634992332820282019728792003956564819968,</text>
+<text text-anchor="middle" x="2518.5" y="-3363.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Id_1 : 55059044443283702463324320493339087092216481002364619407536350093263669035008,</text>
+<text text-anchor="middle" x="2518.5" y="-3348.8" font-family="Times,serif" font-size="14.00" fill="#000000"> Is : 0}</text>
 <text text-anchor="middle" x="2518.5" y="-3333.8" font-family="Times,serif" font-size="14.00" fill="#000000">5000(Gsreset):(!(Ia_store&#45;1&#45;newOwner == 0 </text>
 <text text-anchor="middle" x="2518.5" y="-3318.8" font-family="Times,serif" font-size="14.00" fill="#000000">&amp;&amp; Concat(Extract(255, 160, Ia_store&#45;1&#45;newOwner), 0) != 0)</text>
 <text text-anchor="middle" x="2518.5" y="-3303.8" font-family="Times,serif" font-size="14.00" fill="#000000">? 5000 : 20000)){Ia_store&#45;1&#45;newOwner : 115792089237316195423570985008687907853269984665640564039457584007913129639935,</text>
