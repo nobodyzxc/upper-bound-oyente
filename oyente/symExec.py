@@ -260,30 +260,65 @@ def build_cfg_and_analyze():
         construct_static_edges()
         full_sym_exec()  # jump targets are constructed on the fly
 
+def handle_pc(prob_pcs):
+    concat = lambda l: reduce(lambda a, b: a + b, l, [])
+    prob_pcs["money_concurrency_bug"] = \
+        concat(prob_pcs["money_concurrency_bug"])
+    prob_pcs["time_dependency_bug"] = \
+        [d[i] for d in prob_pcs["time_dependency_bug"] \
+                for i in d]
+    prob_pcs["assertion_failure"] = \
+        [a.pc for a in prob_pcs["assertion_failure"]]
+    prob_pcs["integer_underflow"] = \
+        [u.pc for u in prob_pcs["integer_underflow"]]
+    prob_pcs["integer_overflow"] = \
+        [o.pc for o in prob_pcs["integer_overflow"]]
+    return prob_pcs
 
-def print_cfg(filename, show_path_cond):
-    # acc_gas = 0
-    # acc_cons = ""
-    #print(longest_path)
-    #print([i for i in vertices])
-    # for lid in longest_path:
-        # acc_gas += vertices[lid].gas
-        # if vertices[lid].gas_constraints:
-        #     acc_cons += '\n + '.join(vertices[lid].gas_constraints[0])
-        # vertices[lid].acc_gas = str(acc_gas)
-        # + (' + gas_constraints' if acc_cons else '')
-        # vertices[lid].acc_gas_constraints = acc_cons
+def tag_vulnerability(block, pcs):
 
-    create_graph(
-            cfg_nodes(vertices.values(),
-                      longest_path,
-                      show_path_cond,
-                      g_src_map,
-                      global_problematic_pcs),
-            cfg_edges(edges, longest_path,
-                      cfg_path_constraints,
-                      show_path_cond),
-            filename)
+    weakness = set()
+    for key in pcs:
+        if [pc for pc in pcs[key] \
+                if pc >= block.start \
+                and pc <= block.end]:
+            weakness.add(key)
+
+    return weakness
+
+def print_cfg(filename, args):
+
+    pcs = handle_pc(global_problematic_pcs)
+    for addr in vertices:
+        vertices[addr].weakness = \
+                tag_vulnerability(vertices[addr], pcs)
+
+    blocks = vertices.values()
+
+    mark = [lambda nodes: nodes,
+            lambda nodes: mark_long_node(longest_path, nodes),
+            lambda nodes: mark_weak_node(blocks, nodes)]
+    draw = [lambda edges: edges,
+            lambda edges: draw_long_edge(longest_path, edges),
+            lambda edges: draw_weak_edge(blocks, all_path, edges)]
+
+    normal, longest, weakness  = 0, 1, 2
+    if args.cfg: graph_type = normal
+    if args.cfg_gas: graph_type = longest
+    if args.cfg_weak: graph_type = weakness
+
+    if args.cfg or args.cfg_weak or args.cfg_gas:
+        create_graph(
+                mark[graph_type](
+                    cfg_nodes(blocks,
+                        longest_path,
+                        args.paths,
+                        g_src_map)),
+                draw[graph_type](
+                    cfg_edges(edges,
+                        cfg_path_constraints,
+                        args.paths)),
+                filename)
 
     eprint = lambda *args, **kwargs: print(*args, file=sys.stderr, **kwargs)
 
@@ -763,6 +798,7 @@ def sym_exec_block(params, block, pre_block, depth, func_call, current_func_name
         longest_path = current_path.copy()
 
     #if vertices[block].type == "terminal":
+
     if not edges[block]:
         all_path.append(current_path.copy())
         vertices[block].acc_gas[tuple(current_path)] = analysis["gas"]
@@ -2689,5 +2725,5 @@ def run(name, args, disasm_file=None, source_file=None, source_map=None):
         name = name[name.rfind('/') + 1:]
         print_cfg(
                 name,
-                args.paths)
+                args)
         return ret

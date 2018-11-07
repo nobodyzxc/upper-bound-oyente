@@ -16,6 +16,7 @@ class BasicBlock:
         self.stksum = 0
         self.visited = False
         self.source = []
+        self.weakness = set()
 
     def get_start_address(self):
         return self.start

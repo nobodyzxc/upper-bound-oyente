@@ -66,70 +66,63 @@ block gas: {}
         label += split_line + 'no source available'
     return label
 
-
-def handle_pc(prob_pcs):
-    concat = lambda l: reduce(lambda a, b: a + b, l, [])
-    prob_pcs["money_concurrency_bug"] = \
-        concat(prob_pcs["money_concurrency_bug"])
-    prob_pcs["time_dependency_bug"] = \
-        [d[i] for d in prob_pcs["time_dependency_bug"] \
-                for i in d]
-    prob_pcs["assertion_failure"] = \
-        [a.pc for a in prob_pcs["assertion_failure"]]
-    prob_pcs["integer_underflow"] = \
-        [u.pc for u in prob_pcs["integer_underflow"]]
-    prob_pcs["integer_overflow"] = \
-        [o.pc for o in prob_pcs["integer_overflow"]]
-    return prob_pcs
-
-def tag_vulnerability(block, node, pcs):
-
-    weakness = set()
-    for key in pcs:
-        if [pc for pc in pcs[key] \
-                if pc >= block.start \
-                and pc <= block.end]:
-            weakness.add(key)
-    if weakness:
-        node[1]['label'] = "vulnerability:{}\n{}".format(
-                str(weakness), node[1]['label'])
-        node[1]['fillcolor'] = '#ff6666'
-
-    return node
-
-def cfg_nodes(blocks, lgp, show_constraints, src_map, global_problematic_pcs):
-    # draw color on longest path
-    draw_longest = lambda block: \
-            ['#ffffff', '', '#f4f141'][min((block.start in lgp) * 2 \
-                                        + bool(block.visited), 2)]
-
-    # draw vulnerability on block
-    # draw_vulnerability = lambda block: \
-    #        ['#f44242',
-
-    print(global_problematic_pcs)
-
-    pcs = handle_pc(global_problematic_pcs)
-
+def cfg_nodes(blocks, lgp, show_constraints, src_map):
     nodes = [(str(block.start), \
              { 'label' : make_label(block, show_constraints), \
                 'shape': 'box', \
                 'style': 'filled', \
-                'fillcolor': draw_longest(block),
+                'fillcolor': '' if block.visited else '#ffffff'
              }) for block in blocks]
-
-    for i, (node, block) in enumerate(zip(nodes, blocks)):
-        nodes[i] = tag_vulnerability(block, node, pcs)
-
     return nodes
 
-def cfg_edges(es, lgp, p_cond, show_cond):
+def mark_long_node(path, nodes):
+    for i, node in enumerate(nodes):
+        if int(node[0]) in path:
+            nodes[i][1]['fillcolor'] = '#f4f141'
+    return nodes
 
-    les = list(zip(lgp[:-1], lgp[1:]))
-    es = [(b, e) for b in es for e in es[b]]
+def mark_weak_node(blocks, nodes):
+    for i, (block, node) in \
+            enumerate(zip(blocks, nodes)):
+        if block.weakness:
+            nodes[i][1]['fillcolor'] = '#f44242'
+            nodes[i][1]['label'] = 'weakness: {}\n\n{}\n'.format(
+                    str(block.weakness), nodes[i][1]['label'])
+    return nodes
+
+def draw_long_edge(path, edges):
+    path_edges = list(zip(path[:-1], path[1:]))
+    for i, edge in enumerate(edges):
+        (b, e) = edge[0]
+        b, e = int(b), int(e)
+        if (b, e) in path_edges:
+            edges[i][1]['color'] = 'red'
+    return edges
+
+def draw_weak_edge(blocks, paths, edges):
+    weak_blocks = set(block.start \
+            for block in blocks if block.weakness)
+    weak_paths = [path for path in paths \
+            if any([b in weak_blocks for b in path])]
+    weak_edges = set()
+    for path in weak_paths:
+        path_edges = list(zip(path[:-1], path[1:]))
+        for edge in path_edges:
+            weak_edges.add(edge)
+
+    for i, edge in enumerate(edges):
+        (b, e) = edge[0]
+        b, e = int(b), int(e)
+        if (b, e) in weak_edges:
+            edges[i][1]['color'] = 'red'
+    return edges
+
+def cfg_edges(edges, p_cond, show_cond):
+
+    edges = [(b, e) for b in edges for e in edges[b]]
 
     return [((str(b), str(e)),
             {'label' : ('\n' + '=' * 40 + '\n').join(p_cond.get((b, e), [])) \
                     if show_cond else '',
-             'color': 'red' if (b, e) in les else 'blue'
-            }) for (b, e) in es]
+             'color': 'blue'
+            }) for (b, e) in edges]

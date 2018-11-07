@@ -1,6 +1,0 @@
-WARNING:root:You are using evm version 1.8.15. The supported version is 1.7.3
-CRITICAL:root:14/14.sol:1:1: Error: Source file requires different compiler version (current compiler is 0.4.25+commit.59dbf8f1.Linux.g++ - note that nightly builds are considered to be strictly less than the released version
-pragma solidity 0.4.23;
-^---------------------^
-
-CRITICAL:root:Solidity compilation failed.
