@@ -312,8 +312,7 @@ def print_cfg(filename, args):
                 mark[graph_type](
                     cfg_nodes(blocks,
                         longest_path,
-                        args.paths,
-                        g_src_map)),
+                        args.paths)),
                 draw[graph_type](
                     cfg_edges(edges,
                         cfg_path_constraints,

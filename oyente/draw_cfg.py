@@ -66,7 +66,7 @@ block gas: {}
         label += split_line + 'no source available'
     return label
 
-def cfg_nodes(blocks, lgp, show_constraints, src_map):
+def cfg_nodes(blocks, lgp, show_constraints):
     nodes = [(str(block.start), \
              { 'label' : make_label(block, show_constraints), \
                 'shape': 'box', \
