@@ -44,12 +44,12 @@ gas assignments:
  5000(Gsreset):(!(Ia_store-0-owner == 0 
 && Concat(Extract(255, 160, Ia_store-0-owner),
        Extract(159, 0, Ia_store-1-newOwner)) != 0)
-? 5000 : 20000)){Iv : 0,
- Ia_store-0-owner : 1,
+? 5000 : 20000)){Ia_store-0-owner : 115792089237316195423570985008687907853269984665639945069437941317775680077823,
  Ia_store-1-newOwner : 0,
- Id_size : 57896044618658097711785492504343953926634992332820282019728792003956564819968,
+ Is : 0,
  Id_1 : 55059044443283702463324320493339087092216481002364619407536350093263669035008,
- Is : 0}
+ Id_size : 4,
+ Iv : 0}
 5000(Gsreset):(!(Ia_store-1-newOwner == 0 
 && Concat(Extract(255, 160, Ia_store-1-newOwner), 0) != 0)
 ? 5000 : 20000)){Ia_store-1-newOwner : 115792089237316195423570985008687907853269984665640564039457584007913129639935,
@@ -212,3 +212,4 @@ gas: 151
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
+{'money_concurrency_bug': [[]], 'reentrancy_bug': [], 'time_dependency_bug': [{}], 'assertion_failure': [], 'integer_underflow': [], 'integer_overflow': []}

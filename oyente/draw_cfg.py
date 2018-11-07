@@ -1,5 +1,6 @@
 import graphviz as gv
 import functools
+from functools import reduce
 from opcodes import stack_v
 import pprint
 
@@ -26,49 +27,101 @@ def create_graph(n, e, filename):
     g.render(filename=filename, cleanup=True)
     return g
 
-def cfg_nodes(blocks, lgp, show_cond, src_map):
-    color = lambda tag, cover: \
-            ['#ffffff', '', '#f4f141'][min((tag in lgp) * 2 + bool(cover), 2)]
-    cond = lambda show, cons: ('\n' + '=' * 40 + '\n') + \
-            ('\n' + '=' * 40 + '\n').join(cons) if cons and show else ''
-    acc_gas = lambda g: 'accumulated gas : ' + pprint.pformat(g) + '\n\n' if g else ''
+split_line = '\n' + '=' * 40 + '\n'
 
-    # addIdx = lambda inst, addrs: '\n'.join(inst)
-    notaddIdx = lambda inst, addrs: \
-            '\n'.join(["%s" % inst \
-            for (idx,inst) in zip(addrs, inst)]) \
-            if len(inst) == len(addrs) else '\n'.join(inst)
-    addIdx = lambda inst, addrs: \
-            '\n'.join(["%d:%s" % (idx, inst) \
-            for (idx,inst) in zip(addrs, inst)]) \
-            if len(inst) == len(addrs) else '\n'.join(inst)
+def make_label(block, show_constraints):
+    label = """{}
 
-    return [(str(block.start), \
-             { 'label' : \
-                 """%s\naddrs : (%s, %s)\n\n%s\n\n%s\n%s\n%s%s%s%s""" % (
-                    block.type,
-                    block.start, block.end,
-                    notaddIdx(block.instructions,
-                              block.addrs),
-                    "stack sum: " + str(block.stksum),
-                    'block gas : ' + str(block.gas),
-                    acc_gas(block.acc_gas),
-                    cond(show_cond, ["gas_assignment{}:\n{}".format(i + 1, '\n'.join(v))\
-                            for i, v in enumerate(block.gas_constraints.values())]),
-                    # '\n' + '=' * 40 + "\nacc_gas_constraints:\n" + \
-                    # block.acc_gas_constraints \
-                    # if block.acc_gas_constraints else '',
-                    cond(show_cond,
-                        ["path_constraints{}:\n{}".format(
-                            i + 1,
-                            ',\n'.join(map(str, v)))
-                                for i, v in enumerate(block.path_cond.values())]),
-                    "\n{}\n{}".format('-' * 40, block.source[-1])
-                    ),
+line number : ({}, {})
+
+{}
+
+stack sum: {}
+block gas: {}
+       """.format(
+               block.type,
+               block.start, block.end,
+               '\n'.join(block.instructions),
+               block.stksum,
+               block.gas)
+
+    if block.acc_gas:
+        label += '\naccumulated gas :\n{}\n'.format(
+                pprint.pformat(block.acc_gas))
+
+    if show_constraints:
+        if block.gas_constraints:
+            label += split_line + split_line.join(
+                    ["gas_assignment{}:\n{}".format(i + 1, '\n'.join(v)) \
+                            for i, v in enumerate(block.gas_constraints.values())])
+        if block.path_cond:
+            label += split_line + split_line.join(
+                    ["path_constraints{}:\n{}".format(
+                            i + 1, ',\n'.join(map(str, v)))
+                                for i, v in enumerate(block.path_cond.values())])
+    if block.source:
+        label += split_line + block.source[-1].replace('\n', '\l')
+        # label += split_line + split_line.join(block.source)
+    else:
+        label += split_line + 'no source available'
+    return label
+
+
+def handle_pc(prob_pcs):
+    concat = lambda l: reduce(lambda a, b: a + b, l, [])
+    prob_pcs["money_concurrency_bug"] = \
+        concat(prob_pcs["money_concurrency_bug"])
+    prob_pcs["time_dependency_bug"] = \
+        [d[i] for d in prob_pcs["time_dependency_bug"] \
+                for i in d]
+    prob_pcs["assertion_failure"] = \
+        [a.pc for a in prob_pcs["assertion_failure"]]
+    prob_pcs["integer_underflow"] = \
+        [u.pc for u in prob_pcs["integer_underflow"]]
+    prob_pcs["integer_overflow"] = \
+        [o.pc for o in prob_pcs["integer_overflow"]]
+    return prob_pcs
+
+def tag_vulnerability(block, node, pcs):
+
+    weakness = set()
+    for key in pcs:
+        if [pc for pc in pcs[key] \
+                if pc >= block.start \
+                and pc <= block.end]:
+            weakness.add(key)
+    if weakness:
+        node[1]['label'] = "vulnerability:{}\n{}".format(
+                str(weakness), node[1]['label'])
+        node[1]['fillcolor'] = '#ff6666'
+
+    return node
+
+def cfg_nodes(blocks, lgp, show_constraints, src_map, global_problematic_pcs):
+    # draw color on longest path
+    draw_longest = lambda block: \
+            ['#ffffff', '', '#f4f141'][min((block.start in lgp) * 2 \
+                                        + bool(block.visited), 2)]
+
+    # draw vulnerability on block
+    # draw_vulnerability = lambda block: \
+    #        ['#f44242',
+
+    print(global_problematic_pcs)
+
+    pcs = handle_pc(global_problematic_pcs)
+
+    nodes = [(str(block.start), \
+             { 'label' : make_label(block, show_constraints), \
                 'shape': 'box', \
                 'style': 'filled', \
-                'fillcolor': color(block.start, block.visited),
+                'fillcolor': draw_longest(block),
              }) for block in blocks]
+
+    for i, (node, block) in enumerate(zip(nodes, blocks)):
+        nodes[i] = tag_vulnerability(block, node, pcs)
+
+    return nodes
 
 def cfg_edges(es, lgp, p_cond, show_cond):
 

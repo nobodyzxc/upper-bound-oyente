@@ -833,3 +833,8 @@ gas: 1764
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
+{'money_concurrency_bug': [[]], 'reentrancy_bug': [], 'time_dependency_bug': [{}], 'assertion_failure': [], 'integer_underflow': [], 'integer_overflow': []}
+{'money_concurrency_bug': [[]], 'reentrancy_bug': [], 'time_dependency_bug': [{}], 'assertion_failure': [], 'integer_underflow': [Underflow(pc=1621, model=[Ia_store-6- = 1,
+ Id_1 = 36277700142134708014849320186210167917722583896436439338879902957861559336960,
+ Id_size = 4,
+ Iv = 0])], 'integer_overflow': []}

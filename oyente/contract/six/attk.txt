@@ -253,3 +253,4 @@ gas assignments:
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
+{'money_concurrency_bug': [[], [967], [1254]], 'reentrancy_bug': [], 'time_dependency_bug': [{}, {3: 12, 4: 64, 5: 75, 6: 86, 7: 473, 8: 967}, {3: 12, 4: 64, 5: 75, 6: 86, 7: 97, 8: 108, 9: 119, 10: 1254}], 'assertion_failure': [], 'integer_underflow': [], 'integer_overflow': []}

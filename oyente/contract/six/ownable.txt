@@ -115,3 +115,4 @@ gas: 107
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
+{'money_concurrency_bug': [[]], 'reentrancy_bug': [], 'time_dependency_bug': [{}], 'assertion_failure': [], 'integer_underflow': [], 'integer_overflow': []}
