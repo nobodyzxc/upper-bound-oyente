@@ -155,7 +155,7 @@ def main():
     parser.add_argument( "-sjo", "--standard-json-output",   help="Support Standard JSON output", action="store_true")
     parser.add_argument( "-cfg", "--control-flow-graph",   help="Generate control flow graph", dest="cfg", action="store_true")
     parser.add_argument( "-cfg-weak", "--cfg-weak",   help="Generate control flow graph mark with weak paths", dest="cfg_weak", action="store_true")
-    parser.add_argument( "-cfg-gas", "--cfg-gas",   help="Generate control flow graph mark with max gas cost path", dest="cfg_gas", action="store_true")
+    parser.add_argument( "-cfg-gas", "--cfg-gas",   help="Generate control flow graph mark with (upper bound) max gas cost path", dest="cfg_gas", action="store_true")
 
     args = parser.parse_args()
 
