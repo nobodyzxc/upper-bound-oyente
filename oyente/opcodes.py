@@ -88,6 +88,8 @@ opcodes = {
 }
 
 stack_v = opcodes.copy()
+# new name of SUICIDE
+stack_v["SELFDESTRUCT"] = [0xff, 1, 0]
 stack_v["RETURNDATASIZE"] = [0x3d, 0, 1]
 stack_v["RETURNDATACOPY"] = [0x3e, 3, 0]
 stack_v["PUSH1"]          = [0x60, 0, 1]
@@ -158,6 +160,9 @@ stack_v["DELEGATECALL"]   = [0xf4,  6,  1]
 
 # TO BE UPDATED IF ETHEREUM VM CHANGES their fee structure
 
+# update BYZANTIUM VERSION 2d0661f - 2018-11-0825
+# https://ethereum.github.io/yellowpaper/paper.pdf
+# appendix G
 GCOST = {
     "Gzero": 0,
     "Gbase": 2,
@@ -165,23 +170,44 @@ GCOST = {
     "Glow": 5,
     "Gmid": 8,
     "Ghigh": 10,
-    "Gextcode": 20,
+
+    # "Gextcode": 20,
+    "Gextcode": 700, # update
+
     "Gbalance": 400,
-    "Gsload": 50,
+
+    # "Gsload": 50,
+    "Gsload": 200,   # update
+
     "Gjumpdest": 1,
     "Gsset": 20000,
     "Gsreset": 5000,
     "Rsclear": 15000,
-    "Rsuicide": 24000,
-    "Gsuicide": 5000,
+
+    "Rselfdestruct" : 24000, # new Refund given
+
+    "Rsuicide": 24000, # not exist in new version
+                       # shold I comment it ?
+
+    "Gselfdestruct" : 5000, # new gas cost
+
+    "Gsuicide": 5000, # not exist in new version
+                      # shold I comment it ?
+
     "Gcreate": 32000,
     "Gcodedeposit": 200,
-    "Gcall": 40,
+
+    # "Gcall": 40,
+    "Gcall" : 700,   # update
+
     "Gcallvalue": 9000,
     "Gcallstipend": 2300,
     "Gnewaccount": 25000,
     "Gexp": 10,
-    "Gexpbyte": 10,
+
+    # "Gexpbyte": 10,
+    "Gexpbyte": 50,  # update
+
     "Gmemory": 3,
     "Gtxcreate": 32000,
     "Gtxdatazero": 4,
@@ -193,7 +219,8 @@ GCOST = {
     "Gsha3": 30,
     "Gsha3word": 6,
     "Gcopy": 3,
-    "Gblockhash": 20
+    "Gblockhash": 20,
+    "Gquaddivisor" : 100 # new gas cost
 }
 
 Wzero = ("STOP", "RETURN", "REVERT", "ASSERTFAIL")
@@ -266,7 +293,7 @@ def get_ins_cost(opcode):
         return GCOST["Glog"] + num_topics * GCOST["Glogtopic"]
     elif opcode == "EXTCODECOPY":
         return GCOST["Gextcode"]
-    elif opcode in ("CALLDATACOPY", "CODECOPY"):
+    elif opcode in ("CALLDATACOPY", "CODECOPY", "RETURNDATACOPY"):
         return GCOST["Gverylow"]
     elif opcode == "BALANCE":
         return GCOST["Gbalance"]

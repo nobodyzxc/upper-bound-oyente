@@ -56,17 +56,17 @@ block gas: {}
                             for i, v in enumerate(block.gas_constraints.values())])
         if block.path_cond:
             label += split_line + split_line.join(
-                    ["path_constraints{}:\n{}".format(
+                    ["path_constraint{}:\n{}".format(
                             i + 1, ',\n'.join(map(str, v)))
                                 for i, v in enumerate(block.path_cond.values())])
     if block.source:
-        label += split_line + block.source[-1].replace('\n', '\l')
+        label += split_line + block.source[-1].replace('\n', '\l') + '\l'
         # label += split_line + split_line.join(block.source)
     else:
         label += split_line + 'no source available'
     return label
 
-def cfg_nodes(blocks, lgp, show_constraints):
+def cfg_nodes(blocks, show_constraints):
     nodes = [(str(block.start), \
              { 'label' : make_label(block, show_constraints), \
                 'shape': 'box', \
@@ -122,7 +122,7 @@ def cfg_edges(edges, p_cond, show_cond):
     edges = [(b, e) for b in edges for e in edges[b]]
 
     return [((str(b), str(e)),
-            {'label' : ('\n' + '=' * 40 + '\n').join(p_cond.get((b, e), [])) \
+            {'label' : split_line.join(p_cond.get((b, e), [])) \
                     if show_cond else '',
              'color': 'blue'
             }) for (b, e) in edges]

@@ -311,7 +311,6 @@ def print_cfg(filename, args):
         create_graph(
                 mark[graph_type](
                     cfg_nodes(blocks,
-                        longest_path,
                         args.paths)),
                 draw[graph_type](
                     cfg_edges(edges,
@@ -2722,7 +2721,5 @@ def run(name, args, disasm_file=None, source_file=None, source_map=None):
         closing_message()
         name = name.replace(".sol", '_').replace(':', "")
         name = name[name.rfind('/') + 1:]
-        print_cfg(
-                name,
-                args)
+        print_cfg(name, args)
         return ret
